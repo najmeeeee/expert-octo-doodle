@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Login Page</title>
     <style>
         body {
@@ -81,6 +82,8 @@
         <div class="login-box">
             <h2>Login</h2>
             <?php
+            session_start(); // Start PHP session
+
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $host = "localhost";
                 $username = "root";
@@ -99,21 +102,31 @@
                 $password = $_POST['password'];
 
                 // Prepare and bind
-                if ($stmt = $conn->prepare("SELECT pass FROM  regisration WHERE email = ?")) {
+                if ($stmt = $conn->prepare("SELECT userid, pass FROM registration WHERE email = ?")) {
                     $stmt->bind_param("s", $email);
 
                     // Execute the query
                     $stmt->execute();
 
-                    // Bind the result to a variable
-                    $stmt->bind_result($hashed_password);
+                    // Bind the result to variables
+                    $stmt->bind_result($userid, $hashed_password);
 
                     // Fetch the result
                     if ($stmt->fetch()) {
                         // Verify the password
                         if (password_verify($password, $hashed_password)) {
+                            // Login successful
+                            $_SESSION['userid'] = $userid; // Store user ID in session
                             echo "<p>Login successful!</p>";
-                            // Here you can redirect to a protected page or set session variables
+
+                            // Optionally set a cookie for persistent login
+                            $cookie_name = "userid";
+                            $cookie_value = $userid;
+                            setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 30 days
+
+                            // Redirect to a protected page if needed
+                            // header("Location: protected_page.php");
+                            // exit();
                         } else {
                             echo "<p>Invalid email or password.</p>";
                         }
@@ -129,12 +142,12 @@
                 $conn->close();
             }
             ?>
-            <form action="" method="post">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <a href="#" class="pass">Forgot Password?</a>
                 <input type="submit" value="Login">
-                <p>Don't have an account? <a href="http://localhost/crest/demo.php" class="sig">Sign Up</a></p>
+                <p>Don't have an account? <a href="http://localhost:8080/crest/userregister.php" class="sig">Sign Up</a></p>
             </form>
         </div>
     </div>
