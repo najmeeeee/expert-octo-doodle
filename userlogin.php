@@ -99,7 +99,7 @@
                 $password = $_POST['password'];
 
                 // Prepare and bind
-                if ($stmt = $conn->prepare("SELECT password FROM users WHERE email = ?")) {
+                if ($stmt = $conn->prepare("SELECT pass FROM  regisration WHERE email = ?")) {
                     $stmt->bind_param("s", $email);
 
                     // Execute the query
