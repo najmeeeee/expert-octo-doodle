@@ -17,7 +17,7 @@
         }
 
         .container {
-            background: rgb(35, 15, 4, 0.5);
+            background: rgba(35, 15, 4, 0.5);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -112,6 +112,8 @@
 </head>
 <body>
 <?php
+session_start();
+
 $host = "localhost";
 $username = "root";
 $password = ""; // Your database password
@@ -126,17 +128,27 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fname = $_POST['firstName'];
-    $lname = $_POST['lastName'];
-    $email = $_POST['email'];
-    $pass = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password for security
-    $gender = $_POST['gender'];
-    $place = $_POST['place'];
-    $phno = $_POST['phone'];
+    $fname = $conn->real_escape_string($_POST['firstName']);
+    $lname = $conn->real_escape_string($_POST['lastName']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $pass = password_hash($conn->real_escape_string($_POST['password']), PASSWORD_BCRYPT); // Hash the password for security
+    $gender = $conn->real_escape_string($_POST['gender']);
+    $place = $conn->real_escape_string($_POST['place']);
+    $phno = $conn->real_escape_string($_POST['phone']);
 
     $sql = "INSERT INTO registration (fname, lname, email, pass, gender, place, phno) VALUES ('$fname', '$lname', '$email', '$pass', '$gender', '$place', '$phno')";
 
     if ($conn->query($sql) === TRUE) {
+        // Set session variables
+        $_SESSION['firstName'] = $fname;
+        $_SESSION['lastName'] = $lname;
+        $_SESSION['email'] = $email;
+
+        // Set cookies (expire in 1 hour)
+        setcookie("firstName", $fname, time() + 3600, "/");
+        setcookie("lastName", $lname, time() + 3600, "/");
+        setcookie("email", $email, time() + 3600, "/");
+
         echo "<script>alert('Registration successful!');</script>";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -163,7 +175,7 @@ $conn->close();
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" minlength="8"required>
+                <input type="password" id="password" name="password" placeholder="Enter your password" minlength="8" required>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
