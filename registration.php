@@ -117,6 +117,8 @@
 </head>
 <body>
 <?php
+session_start();
+
 $host = "localhost";
 $username = "root";
 $password = ""; // Your database password
@@ -142,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = 2; // Default role as user
 
     // Check for unique email and phone number
-    $checkUnique = "SELECT * FROM User WHERE email='$email' OR phno='$phno'";
+    $checkUnique = "SELECT * FROM user WHERE email='$email' OR phno='$phno'";
     $result = $conn->query($checkUnique);
 
     if ($result === false) {
@@ -150,9 +152,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($result->num_rows > 0) {
         echo "<script>alert('Email or phone number already exists. Please use a different email or phone number.');</script>";
     } else {
-        $sql = "INSERT INTO User (fname, lname, email, pass, role, gender, place, dob, phno) VALUES ('$fname', '$lname', '$email', '$pass', '$role', '$gender', '$place', '$dob', '$phno')";
+        $sql = "INSERT INTO user (fname, lname, email, pass, role, gender, place, dob, phno) VALUES ('$fname', '$lname', '$email', '$pass', '$role', '$gender', '$place', '$dob', '$phno')";
 
         if ($conn->query($sql) === TRUE) {
+            $_SESSION['user'] = [
+                'fname' => $fname,
+                'lname' => $lname,
+                'email' => $email,
+                'gender' => $gender,
+                'place' => $place,
+                'dob' => $dob,
+                'phno' => $phno,
+                'role' => $role
+            ];
             echo "<script>alert('Registration successful!');</script>";
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
