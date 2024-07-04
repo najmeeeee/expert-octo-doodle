@@ -161,7 +161,7 @@ $conn->close();
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="submit" value="Login">
-                <p>Don't have an account? <a href="http://localhost/crest/demo1.php" class="sig">Sign Up</a></p>
+                <p>Don't have an account? <a href="http://localhost/crest/registration.php" class="sig">Sign Up</a></p>
             </form>
         </div>
     </div>
