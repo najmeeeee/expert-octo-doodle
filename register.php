@@ -1,4 +1,60 @@
-﻿<!DOCTYPE html>
+<?php
+// Start the session at the very beginning
+session_start();
+
+// Database connection parameters
+$host = "localhost";
+$username = "root";
+$password = ""; // Your database password
+$dbname = "miniproject";
+
+// Create connection
+$conn = new mysqli($host, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Collect form data
+    $fname = $_POST['firstName'];
+    $lname = $_POST['lastName'];
+    $email = $_POST['email'];
+    $pass = $_POST['password']; // Plain password from form
+    $hashed_password = hash('sha256', $pass); // Hash the password
+    $gender = $_POST['gender'];
+    $place = $_POST['place'];
+    $phno = $_POST['phone'];
+    $dob = $_POST['date']; // Capture the registration date from the form
+    $role = 2; // Default role as user
+
+    // Check for unique email and phone number
+    $checkUnique = "SELECT * FROM user WHERE email='$email' OR phno='$phno'";
+    $result = $conn->query($checkUnique);
+
+    if ($result === false) {
+        echo "<script>alert('Database query error: " . $conn->error . "');</script>";
+    } elseif ($result->num_rows > 0) {
+        echo "<script>alert('Email or phone number already exists. Please use a different email or phone number.');</script>";
+    } else {
+        // Insert user into database
+        $sql = "INSERT INTO user (fname, lname, email, pass, role, gender, place, Dob, phno) 
+                VALUES ('$fname', '$lname', '$email', '$hashed_password', '$role', '$gender', '$place', '$dob', '$phno')";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "<script>alert('Registration successful!');</script>";
+        } else {
+            echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
+        }
+    }
+}
+
+// Close connection
+$conn->close();
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -166,59 +222,6 @@
     </script>
 </head>
 <body>
-<?php
-// Database connection parameters
-$host = "localhost";
-$username = "root";
-$password = ""; // Your database password
-$dbname = "miniproject";
-
-// Create connection
-$conn = new mysqli($host, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Collect form data
-    $fname = $_POST['firstName'];
-    $lname = $_POST['lastName'];
-    $email = $_POST['email'];
-    $pass = $_POST['password']; // Plain password from form
-    $hashed_password = hash('sha256', $pass); // Hash the password
-    $gender = $_POST['gender'];
-    $place = $_POST['place'];
-    $phno = $_POST['phone'];
-    $dob = $_POST['date']; // Capture the registration date from the form
-    $role = 2; // Default role as user
-
-    // Check for unique email and phone number
-    $checkUnique = "SELECT * FROM user WHERE email='$email' OR phno='$phno'";
-    $result = $conn->query($checkUnique);
-
-    if ($result === false) {
-        echo "<script>alert('Database query error: " . $conn->error . "');</script>";
-    } elseif ($result->num_rows > 0) {
-        echo "<script>alert('Email or phone number already exists. Please use a different email or phone number.');</script>";
-    } else {
-        // Insert user into database
-        $sql = "INSERT INTO user (fname, lname, email, pass, role, gender, place, Dob, phno) 
-                VALUES ('$fname', '$lname', '$email', '$hashed_password', '$role', '$gender', '$place', '$dob', '$phno')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Registration successful!');</script>";
-        } else {
-            echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
-        }
-    }
-}
-
-// Close connection
-$conn->close();
-?>
     <div class="container">
         <form id="registrationForm" method="POST" action="" onsubmit="return validateForm()">
             <h2>Registration</h2>
@@ -260,15 +263,17 @@ $conn->close();
                 </select>
             </div>
             <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" placeholder="Enter your date" required>
-            </div>
-            <div class="form-group">
                 <label for="place">Place</label>
                 <input type="text" id="place" name="place" placeholder="Enter your place" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date of Birth</label>
+                <input type="date" id="date" name="date" required>
             </div>
             <button type="submit">Register</button>
         </form>
     </div>
 </body>
 </html>
+
+
