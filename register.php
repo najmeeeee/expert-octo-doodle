@@ -16,6 +16,32 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Handle AJAX request for email check
+if (isset($_POST['email_check'])) {
+    $email = $_POST['email'];
+    $query = "SELECT * FROM user WHERE email='$email'";
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+        echo "taken";
+    } else {
+        echo "not_taken";
+    }
+    exit();
+}
+
+// Handle AJAX request for phone number check
+if (isset($_POST['phone_check'])) {
+    $phone = $_POST['phone'];
+    $query = "SELECT * FROM user WHERE phno='$phone'";
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+        echo "taken";
+    } else {
+        echo "not_taken";
+    }
+    exit();
+}
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Collect form data
@@ -94,7 +120,7 @@ $conn->close();
         label {
             display: block;
             margin-bottom: 5px;
-            color: white;
+            color: #ffffff;
             font-weight: bold;
             font-size: 12px;
         }
@@ -105,10 +131,10 @@ $conn->close();
         input[type="tel"],
         input[type="date"],
         select {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 8px;
             box-sizing: border-box;
-            border: 1px solid #ccc;
+            border: 2px solid #fff; /* Thicker border */
             border-radius: 4px;
             background: transparent;
             color: white;
@@ -126,7 +152,7 @@ $conn->close();
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.9); /* Brighter placeholder */
             font-size: 12px;
         }
 
@@ -155,12 +181,71 @@ $conn->close();
 
         .error-message {
             color: #FFFF00;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+            font-size: 10px; /* Adjusted font size for error messages */
+            display: inline-block; /* Display inline to avoid elongating the form */
+            margin-left: 5px; /* Margin to separate from input field */
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function(){
+            var typingTimer;
+            var doneTypingInterval = 500; // milliseconds - adjust as needed
+
+            $('#email').on('input', function(){
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(checkEmail, doneTypingInterval);
+            });
+
+            function checkEmail() {
+                var email = $('#email').val();
+                if (email == '') {
+                    return;
+                }
+                $.ajax({
+                    url: 'register.php',
+                    type: 'post',
+                    data: {
+                        'email_check' : 1,
+                        'email' : email,
+                    },
+                    success: function(response){
+                        var emailError = $('#emailError');
+                        if (response == 'taken' ) {
+                            emailError.text('Sorry... Email already taken');
+                            emailError.css('display', 'block');
+                        } else if (response == 'not_taken') {
+                            emailError.css('display', 'none');
+                        }
+                    }
+                });
+            }
+
+            $('#phone').on('blur', function(){
+                var phone = $('#phone').val();
+                if (phone == '') {
+                    return;
+                }
+                $.ajax({
+                    url: 'register.php',
+                    type: 'post',
+                    data: {
+                        'phone_check' : 1,
+                        'phone' : phone,
+                    },
+                    success: function(response){
+                        var phoneError = $('#phoneError');
+                        if (response == 'taken' ) {
+                            phoneError.text('Sorry... Phone number already taken');
+                            phoneError.css('display', 'block');
+                        } else if (response == 'not_taken') {
+                            phoneError.css('display', 'none');
+                        }
+                    }
+                });
+            });
+        });
+
         function validatePassword() {
             var password = document.getElementById("password").value;
             var confirmPassword = document.getElementById("confirmPassword").value;
@@ -174,7 +259,7 @@ $conn->close();
                 passwordError.style.display = "none";
             }
 
-            if (password !== confirmPassword) {
+            if (password !== confirmPassword && confirmPassword !== "") {
                 confirmPasswordError.textContent = "Passwords do not match.";
                 confirmPasswordError.style.display = "block";
             } else {
@@ -208,30 +293,90 @@ $conn->close();
             }
         }
 
+        function validateName(id, errorId) {
+            var name = document.getElementById(id).value;
+            var namePattern = /^[A-Za-z]+$/;
+            var nameError = document.getElementById(errorId);
+
+            if (!namePattern.test(name)) {
+                nameError.textContent = "Name must contain only letters.";
+                nameError.style.display = "block";
+            } else {
+                nameError.style.display = "none";
+            }
+        }
+
+        function validatePlace() {
+            var place = document.getElementById("place").value;
+            var placePattern = /^[A-Za-z]+$/;
+            var placeError = document.getElementById("placeError");
+
+            if (!placePattern.test(place)) {
+                placeError.textContent = "Place must contain only letters.";
+                placeError.style.display = "block";
+            } else {
+                placeError.style.display = "none";
+            }
+        }
+
+        function validateDate() {
+            var dateInput = document.getElementById("date").value;
+            var dateError = document.getElementById("dateError");
+            var today = new Date();
+            var inputDate = new Date(dateInput);
+
+            if (inputDate > today) {
+                dateError.textContent = "Enter a valid year.";
+                dateError.style.display = "block";
+                return false;
+            } else {
+                dateError.style.display = "none";
+                return true;
+            }
+        }
+
         function validateForm() {
             validatePassword();
             validatePhone();
             validateEmail();
+            validateName('firstName', 'firstNameError');
+            validateName('lastName', 'lastNameError');
+            validatePlace();
+            var isDateValid = validateDate();
+
             var passwordError = document.getElementById("passwordError").style.display;
             var confirmPasswordError = document.getElementById("confirmPasswordError").style.display;
             var phoneError = document.getElementById("phoneError").style.display;
             var emailError = document.getElementById("emailError").style.display;
+            var firstNameError = document.getElementById("firstNameError").style.display;
+            var lastNameError = document.getElementById("lastNameError").style.display;
+            var placeError = document.getElementById("placeError").style.display;
 
-            return passwordError === "none" && confirmPasswordError === "none" && phoneError === "none" && emailError === "none";
+            return passwordError === "none" && confirmPasswordError === "none" && phoneError === "none" && emailError === "none" && firstNameError === "none" && lastNameError === "none" && placeError === "none" && isDateValid;
         }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var dateInput = document.getElementById("date");
+            var today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('max', today);
+
+            dateInput.addEventListener('change', validateDate);
+        });
     </script>
 </head>
 <body>
     <div class="container">
-        <form id="registrationForm" method="POST" action="" onsubmit="return validateForm()">
-            <h2>Registration</h2>
+        <h2>Registration Form</h2>
+        <form method="POST" action="" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required oninput="validateName('firstName', 'firstNameError')">
+                <div id="firstNameError" class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required oninput="validateName('lastName', 'lastNameError')">
+                <div id="lastNameError" class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
@@ -264,16 +409,16 @@ $conn->close();
             </div>
             <div class="form-group">
                 <label for="place">Place</label>
-                <input type="text" id="place" name="place" placeholder="Enter your place" required>
+                <input type="text" id="place" name="place" placeholder="Enter your place" required oninput="validatePlace()">
+                <div id="placeError" class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="date">Date of Birth</label>
                 <input type="date" id="date" name="date" required>
+                <div id="dateError" class="error-message"></div>
             </div>
             <button type="submit">Register</button>
         </form>
     </div>
 </body>
 </html>
-
-
