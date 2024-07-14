@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crest Home Care Services</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        .content h1 {
+            font-size: 3em;
+            margin: 0.5em;
+            font-weight: 700;
+        }
+
+        .content h2 {
+            font-size: 2em;
+            margin: 0.2em;
+            font-weight: 400;
+        }
+
+        .content a {
+            text-decoration: none;
+            color: white;
+            background-color:#264006;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+
+        .content a:hover {
+            background-color: #5D2C1D;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="vedio.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="content">
+        <h1>Welcome to Crest Home Care Services</h1>
+        <h2>Providing Compassionate Care at Home</h2>
+        <a href="register.php">Start Your Journey Today</a>
+    </div>
+</body>
+</html>
