@@ -70,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 VALUES ('$fname', '$lname', '$email', '$hashed_password', '$role', '$gender', '$place', '$dob', '$phno')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Registration successful!');</script>";
+            
+                            header("Location:login.php");
         } else {
             echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
         }
@@ -184,6 +185,22 @@ $conn->close();
             font-size: 10px; /* Adjusted font size for error messages */
             display: inline-block; /* Display inline to avoid elongating the form */
             margin-left: 5px; /* Margin to separate from input field */
+        }
+        .login-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .login-link a {
+            color: #DC7633;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -418,6 +435,9 @@ $conn->close();
                 <div id="dateError" class="error-message"></div>
             </div>
             <button type="submit">Register</button>
+              <div class="login-link">
+                Already have an account? <a href="login.php">Login</a>
+            </div>
         </form>
     </div>
 </body>
