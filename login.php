@@ -1,76 +1,88 @@
-﻿<?php
-session_start();
+<?php
+     session_start();
+     $servername = "localhost";
+     $username = "root";
+     $pass = "";
+     $dbname = "miniproject";
+     
+     // Create connection
+     $conn = new mysqli($servername, $username, $pass, $dbname);
+        
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $admin_check=false;
 
-$servername = "localhost";
-$username = "root";
-$password = ""; // Your database password
-$dbname = "miniproject";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+      $sql= "select * from user where email='$email' and role=2";
+      $query=mysqli_query($conn,$sql);
+            if (mysqli_num_rows($query) == 0)
+                {//admin check
+                  $sql1= "select * from user where email='$email' and role=1";
+                  $query1=mysqli_query($conn,$sql1);
+
+                  
+                  if (mysqli_num_rows($query1) != 0)
+                {
+                  //echo '<script>alert("admin found ")</script>'; 
+                  $admin_check=true;
+                }
+
+                else{
+                    echo '<script>alert("User not found. Register! ")</script>'; 
+                    exit();
+                }
+
+                }
+            
+                              //user pass combination check
+              if($admin_check === false){
+                  $sql= "select * from user where email='$email'and pass=SHA2('$password',256) and role=2";
+                  $query=mysqli_query($conn,$sql);
+                      if (mysqli_num_rows($query) == 0)
+                          {
+                            echo '<script>alert("invalid email and password combination! ")</script>'; 
+                          }
+                     else {
+	
+
+
+                            $user = mysqli_fetch_assoc($query);
+                            $_SESSION['user_id'] = $user['id'];
+                            $_SESSION['user_email'] = $user['email'];
+
+                            
+                            
+                            header("Location:usehome.html");
+                            
+                          }
+                }
+                                //admin pass combination check
+              else{
+                
+                $sql1= "select * from user where email='$email'and pass=SHA2('$password',256) and role=1";
+                  $query1=mysqli_query($conn,$sql1);
+                      if (mysqli_num_rows($query1) == 0)
+                          {
+                            echo '<script>alert("invalid email and password combination! ")</script>'; 
+                          }
+                     else{
+                            $admin = mysqli_fetch_assoc($query1);
+                            $_SESSION['admin_id'] = $admin['id'];
+                            $_SESSION['user_email'] = $admin['email'];
+                            header("Location:adhome.html");
+                            
+                          }
+
+
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $admin_check = false;
+        } 
 
-    // Check if the user is a regular user
-    $sql = "SELECT * FROM user WHERE email='$email' AND role=2";
-    $query = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($query) == 0) {
-        // Check if the user is an admin
-        $sql1 = "SELECT * FROM user WHERE email='$email' AND role=1";
-        $query1 = mysqli_query($conn, $sql1);
-
-        if (mysqli_num_rows($query1) != 0) {
-            $admin_check = true;
-        } else {
-            echo '<script>alert("User not found. Register! ");</script>';
-            exit();
-        }
-    }
-
-    // User password combination check
-    if ($admin_check === false) {
-        $sql = "SELECT * FROM user WHERE email='$email' AND pass=SHA2('$password',256) AND role=2";
-        $query = mysqli_query($conn, $sql);
-
-        if (mysqli_num_rows($query) == 0) {
-            echo '<script>alert("Invalid email and password combination! ");</script>';
-        } else {
-            $user = mysqli_fetch_assoc($query);
-            $_SESSION['user_id'] = $user['usrid'];
-            $_SESSION['user_email'] = $user['email'];
-
-            header("Location: usrHome.php");
-            exit();
-        }
-    }
-    // Admin password combination check
-    else {
-        $sql1 = "SELECT * FROM user WHERE email='$email' AND pass=SHA2('$password',256) AND role=1";
-        $query1 = mysqli_query($conn, $sql1);
-
-        if (mysqli_num_rows($query1) == 0) {
-            echo '<script>alert("Invalid email and password combination! ");</script>';
-        } else {
-            $admin = mysqli_fetch_assoc($query1);
-            $_SESSION['admin_id'] = $admin['usrid'];
-            $_SESSION['user_email'] = $admin['email'];
-            header("Location: admHome.php");
-            exit();
-        }
-    }
-}
-
-$conn->close();
-?>
+     
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +107,7 @@ $conn->close();
             height: 100vh;
         }
         .login-box {
-            background: rgba( 237, 187, 153, 0.5);
+            background: rgba(237, 187, 153, 0.5);
             padding: 20px;
             border-radius: 70px 0 70px 0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -161,7 +173,7 @@ $conn->close();
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="submit" value="Login">
-                <p>Don't have an account? <a href="http://localhost/crest/registration.php" class="sig">Sign Up</a></p>
+               
             </form>
         </div>
     </div>
