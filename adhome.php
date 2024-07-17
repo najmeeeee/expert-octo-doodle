@@ -2,10 +2,10 @@
 session_start();
 
 if (!isset($_SESSION['login_user']) && isset($_COOKIE['login_user'])) {
-  $_SESSION['login_user'] = $_COOKIE['login_user'];
+  $_SESSION['login_admin'] = $_COOKIE['login_admin'];
 }
 
-if (!isset($_SESSION['login_user'])) {
+if (!isset($_SESSION['login_admin'])) {
   header("location: login.php");
   die();
 }
