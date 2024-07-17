@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Start the session at the very beginning
 session_start();
 
@@ -89,7 +89,7 @@ $conn->close();
     <title>Registration Page</title>
     <style>
         body {
-            background-image: url('pic4.jpg');
+            background-image: url('repic.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             display: flex;
@@ -100,17 +100,18 @@ $conn->close();
         }
 
         .container {
-            background: rgba(35, 15, 4, 0.4);
+            background: rgba(248, 249, 247 , 0.4);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
+            border: 2px solid #DC7633;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 20px;
-            color: #fff;
+            color: black;
             font-size: 16px;
         }
 
@@ -121,7 +122,7 @@ $conn->close();
         label {
             display: block;
             margin-bottom: 5px;
-            color: #ffffff;
+            color:black;
             font-weight: bold;
             font-size: 12px;
         }
@@ -135,10 +136,10 @@ $conn->close();
             width: calc(100% - 20px);
             padding: 8px;
             box-sizing: border-box;
-            border: 2px solid #fff; /* Thicker border */
+            border: 2px solid #DC7633; /* Thicker border */
             border-radius: 4px;
             background: transparent;
-            color: white;
+            color: black;
             font-size: 12px;
         }
 
@@ -153,7 +154,7 @@ $conn->close();
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.9); /* Brighter placeholder */
+            color:black; /* Brighter placeholder */
             font-size: 12px;
         }
 
@@ -181,27 +182,13 @@ $conn->close();
         }
 
         .error-message {
-            color: #FFFF00;
+            color: #B62418;
             font-size: 10px; /* Adjusted font size for error messages */
             display: inline-block; /* Display inline to avoid elongating the form */
             margin-left: 5px; /* Margin to separate from input field */
         }
-        .login-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #ffffff;
-            font-size: 12px;
-        }
-
-        .login-link a {
-            color: #DC7633;
-            text-decoration: none;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
+        
+        
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -435,9 +422,7 @@ $conn->close();
                 <div id="dateError" class="error-message"></div>
             </div>
             <button type="submit">Register</button>
-              <div class="login-link">
-                Already have an account? <a href="login.php">Login</a>
-            </div>
+             
         </form>
     </div>
 </body>
