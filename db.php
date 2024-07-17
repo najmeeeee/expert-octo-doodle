@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $admin = mysqli_fetch_assoc($query1);
     
-            $_SESSION['login_user'] = $admin['email'];
+            $_SESSION['login_admin'] = $admin['email'];
             setcookie("login_admin", $username, time() + (86400 * 30), "/"); // 30 days expiration
             header("Location: admhome.php");
         }
