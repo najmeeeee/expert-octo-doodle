@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['login_user'] = $user['email'];
             setcookie("login_user", $username, time() + (86400 * 30), "/"); // 30 days expiration
 
-            header("Location: usehome.php");
+            header("Location: klakla.php");
         }
     }
     // Admin password combination check
