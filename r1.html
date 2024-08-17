@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('photo1.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(232, 240, 0, 0); /* Semi-transparent overlay */
+            z-index: -1;
+        }
+
+        .review-container {
+            background: rgba(167, 166, 165, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 5px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        h1, h2 {
+            margin: 0 0 20px;
+            color: #333;
+        }
+
+        .reviews {
+            margin-bottom: 20px;
+        }
+
+        .review {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for reviews */
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .review .name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .review .rating {
+            color: #ffa500;
+            margin-bottom: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input, textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .rating-container {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .rating-container input[type="radio"] {
+            display: none;
+        }
+
+        .rating-container label {
+            color: #ccc;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .rating-container input[type="radio"]:checked ~ label,
+        .rating-container label:hover,
+        .rating-container label:hover ~ label {
+            color: #ffa500;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #e7f038;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e7f038;
+        }
+    </style>
+</head>
+<body>
+    <div class="backdrop"></div>
+
+    <div class="review-container">
+        <h1>Customer Reviews</h1>
+        <div class="reviews">
+            <!-- Reviews will be dynamically inserted here -->
+        </div>
+
+        <h2>Leave a Review</h2>
+        <form id="reviewForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <textarea id="review" placeholder="Your Review" required></textarea>
+
+            <div class="rating-container">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">★</label>
+            </div>
+
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('reviewForm');
+            const reviewsContainer = document.querySelector('.reviews');
+
+            // Function to load reviews from localStorage
+            function loadReviews() {
+                const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+                savedReviews.forEach(review => {
+                    addReviewToDOM(review.name, review.text, review.rating);
+                });
+            }
+
+            // Function to save a review in localStorage
+            function saveReview(name, text, rating) {
+                const savedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
+                savedReviews.push({ name, text, rating });
+                localStorage.setItem('reviews', JSON.stringify(savedReviews));
+            }
+
+            // Function to add a review to the DOM
+            function addReviewToDOM(name, text, rating) {
+                const review = document.createElement('div');
+                review.classList.add('review');
+
+                const nameElement = document.createElement('div');
+                nameElement.classList.add('name');
+                nameElement.textContent = name;
+
+                const ratingElement = document.createElement('div');
+                ratingElement.classList.add('rating');
+                ratingElement.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+
+                const reviewElement = document.createElement('div');
+                reviewElement.classList.add('text');
+                reviewElement.textContent = text;
+
+                review.appendChild(nameElement);
+                review.appendChild(ratingElement);
+                review.appendChild(reviewElement);
+
+                reviewsContainer.appendChild(review);
+            }
+
+            // Load reviews on page load
+            loadReviews();
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const reviewText = document.getElementById('review').value;
+                const rating = document.querySelector('input[name="rating"]:checked').value;
+
+                // Add the review to the DOM
+                addReviewToDOM(name, reviewText, rating);
+
+                // Save the review in localStorage
+                saveReview(name, reviewText, rating);
+
+                // Clear the form
+                form.reset();
+            });
+        });
+    </script>
+</body>
+</html>
