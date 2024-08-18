@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -87,7 +88,7 @@ if (!isset($_SESSION['login_user'])) {
   <nav class="navbar navbar-expand-sm row container">
     <div class="col-12 col-md-12 col-lg-6 col-sm-4 text-right">
       <a class="navbar-brand" href="#">
-        <img src="C:\xampp\htdocs\crest\img\logo.jpg" alt="logo" style="width: 30%;">
+        <img src="logo.jpg" alt="logo" style="width: 30%;">
       </a>
     </div>
     <div class="col-8 col-md-12 col-lg-6 col-sm-8 text-right">
@@ -116,7 +117,7 @@ if (!isset($_SESSION['login_user'])) {
           <a class="nav-link" href="C:\xampp\htdocs\crest\am.html">AMENITIES</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">| TEAM </a>
+          <a class="nav-link" href="team.html">| TEAM </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="booking.php">| BOOKING </a>
@@ -126,6 +127,10 @@ if (!isset($_SESSION['login_user'])) {
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">| CONTACTS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logssession.php">| logout
+          </a>
         </li>
       </ul>
     </div>
@@ -173,7 +178,7 @@ if (!isset($_SESSION['login_user'])) {
     <div style="height:450px;width:750px" class="container jumbotron text-center">
       <h2 class="text-center">Where does it come from</h2><br>
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\logo1.png" alt="logo">
+        <img src="logo1.png" alt="logo">
       </div>
       <br><br>
       <p class="text-center">
@@ -184,7 +189,7 @@ if (!isset($_SESSION['login_user'])) {
   <div class="row third">
     <div class="col-12 col-md-12 col-lg-3">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\homebox5.jpg" alt="Image">
+        <img src="homebox5.jpg" alt="Image">
       </div>
       <div class="container w3-flat-midnight-blue">
         <br>
@@ -194,7 +199,7 @@ if (!isset($_SESSION['login_user'])) {
     </div>
     <div class="col-12 col-md-12 col-lg-3">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\homebox6.jpg" alt="Image">
+        <img src="homebox6.jpg" alt="Image">
       </div>
       <div class="container w3-flat-nephritis">
         <br>
@@ -204,7 +209,7 @@ if (!isset($_SESSION['login_user'])) {
     </div>
     <div class="col-12 col-md-12 col-lg-3">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\homebox3.jpg" alt="Image">
+        <img src="homebox3.jpg" alt="Image">
       </div>
       <div class="container w3-flat-midnight-blue">
         <br>
@@ -214,7 +219,7 @@ if (!isset($_SESSION['login_user'])) {
     </div>
     <div class="col-12 col-md-12 col-lg-3">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\homebox4.jpeg" alt="Image">
+        <img src="homebox4.jpeg" alt="Image">
       </div>
       <div class="container w3-flat-nephritis">
         <br>
@@ -226,9 +231,9 @@ if (!isset($_SESSION['login_user'])) {
   <div class="row why-us justify-content-center text-center">
     <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\whyus5.jpg" style="width:70%">
-        <img src="C:\xampp\htdocs\crest\img\whyus4.jpg" style="width:70%">
-        <img src="C:\xampp\htdocs\crest\img\whyus6.jpeg" style="width:70%">
+        <img src="whyus5.jpg" style="width:70%">
+        <img src="whyus4.jpg" style="width:70%">
+        <img src="whyus6.jpeg" style="width:70%">
       </div>
     </div>
     <div class="col-12 col-md-4 text-center">
@@ -242,9 +247,9 @@ if (!isset($_SESSION['login_user'])) {
     </div>
     <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
       <div class="img-container">
-        <img src="C:\xampp\htdocs\crest\img\whyus3.jpg" style="width:70%">
-        <img src="C:\xampp\htdocs\crest\img\whyus2.jpg" style="width:70%">
-        <img src="C:\xampp\htdocs\crest\img\whyus1.jpg" style="width:70%">
+        <img src="whyus3.jpg" style="width:70%">
+        <img src="whyus2.jpg" style="width:70%">
+        <img src="whyus1.jpg" style="width:70%">
       </div>
     </div>
   </div>
