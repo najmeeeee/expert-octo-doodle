@@ -7,7 +7,7 @@ if(session_destroy()) {
     if (isset($_COOKIE['login_admin'])) {
         setcookie("login_admin", "", time() - 3600, "/"); // Clear the cookie
     }
-    header("Location: s2.php");
+    header("Location: login.php");
     exit(); // Ensure script termination after redirection
 }
 ?>
