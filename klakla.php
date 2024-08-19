@@ -114,7 +114,7 @@ if (!isset($_SESSION['login_user'])) {
       </ul>
       <ul class="navbar-nav menu">
         <li class="nav-item">
-          <a class="nav-link" href="C:\xampp\htdocs\crest\am.html">AMENITIES</a>
+          <a class="nav-link" href="am.html">AMENITIES</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="team.html">| TEAM </a>
@@ -123,10 +123,10 @@ if (!isset($_SESSION['login_user'])) {
           <a class="nav-link" href="booking.php">| BOOKING </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="C:\xampp\htdocs\crest\r1.html">| REVIEW</a>
+          <a class="nav-link" href="r1.html">| REVIEW</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">| CONTACTS</a>
+          <a class="nav-link" href="cu.html">| CONTACTS</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="logssession.php">| logout
