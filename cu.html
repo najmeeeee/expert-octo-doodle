@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .contact-card {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            width: 320px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background-color: #ffd600;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 20px;
+        }
+
+        .info i {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: #ffd600;
+        }
+
+        .info p {
+            font-size: 1em;
+            margin: 0;
+            text-align: left;
+        }
+
+        .info a {
+            text-decoration: none;
+            color: #ffd600;
+            transition: color 0.3s ease;
+        }
+
+        .info a:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contact-card">
+    <h2>Contact Us</h2>
+    <div class="info">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>123 Anywhere St., Any City, ST 12345</p>
+    </div>
+    <div class="info">
+        <i class="fas fa-phone-alt"></i>
+        <p><a href="tel:1234567890">123-456-7890</a></p>
+    </div>
+    <div class="info">
+        <i class="fas fa-envelope"></i>
+        <p><a href="mailto:hello@reallygreatsite.com">hello@reallygreatsite.com</a></p>
+    </div>
+    <div class="info">
+        <i class="fas fa-globe"></i>
+        <p><a href="https://www.reallygreatsite.com">www.reallygreatsite.com</a></p>
+    </div>
+</div>
+
+</body>
+</html>
