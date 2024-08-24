@@ -1,6 +1,14 @@
-﻿<?php
+<?php
 // Start the session
 session_start();
+include('db.php');
+
+// Check if the session variable is set
+if (isset($_SESSION['tamount'])) {
+    $totalAmount = $_SESSION['tamount'];
+} else {
+    $totalAmount = 0; // Default value if not set
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,16 +51,18 @@ session_start();
         }
 
         .container {
-            width: 40%;
-            margin: 40px auto;
-            background: #FFFFFF;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
-            border: 1px solid #E0E0E0;
-        }
+    width: 40%;
+    margin: 40px auto;
+    background: #FFFFFF;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+    border: 1px solid #E0E0E0;
+    margin-bottom: 100px; /* Add space for the back button */
+}
+
 
         h1 {
             text-align: center;
@@ -174,6 +184,33 @@ session_start();
         .cancel:hover {
             background-color: #E64A19;
         }
+        .back-button-container {
+    position: absolute;
+    bottom: 10px; /* Adjust this value to position the button closer to the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+#backButton {
+    padding: 10px 20px;
+    background-color:#CF6679;
+    color: #121212;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    height: 30px;
+    width: auto; /* Adjust width automatically based on content */
+}
+
+#backButton:hover {
+    background-color: #0056b3;
+}
+
     </style>
 </head>
 <body>
@@ -186,8 +223,8 @@ session_start();
         <!-- Display the total amount -->
         <div class="amount-section">
             <?php
-            if (isset($_SESSION['totalAmount'])) {
-                echo "Total Amount: ₹" . htmlspecialchars($_SESSION['totalAmount']);
+            if (isset($_SESSION['tamount'])) {
+                echo "Total Amount: ₹" . htmlspecialchars($_SESSION['tamount']);
             } else {
                 echo "Total Amount: ₹0"; // Default message if no amount is set
             }
@@ -196,40 +233,34 @@ session_start();
 
         <form id="paymentForm" method="POST" action="">
             <label for="accountholdername">Account Holder Name:</label>
-            <input type="text" id="accountholdername" name="accountholdername" oninput="validateAccountHolderName()">
+            <input type="text" id="accountholdername" name="accountholdername" oninput="validateAccountHolderName()" required>
             <div id="accountholdernameError" class="error"></div>
 
            
 
             <label for="accountno">Account Number:</label>
-            <input type="text" id="accountno" name="accountno" oninput="validateAccountNo()">
+            <input type="text" id="accountno" name="accountno" oninput="validateAccountNo()"  required>
             <div id="accountnoError" class="error"></div>
 
             <label for="ifsc">IFSC Code:</label>
-            <input type="text" id="ifsc" name="ifsc" oninput="validateIfsc()">
+            <input type="text" id="ifsc" name="ifsc" oninput="validateIfsc()"  required>
             <div id="ifscError" class="error"></div>
 
             <label for="cvv">CVV:</label>
-            <input type="text" id="cvv" name="cvv" oninput="validateCvv()">
+            <input type="text" id="cvv" name="cvv" oninput="validateCvv()"  required>
             <div id="cvvError" class="error"></div>
 
             <label for="expirydate">Expiry Date:</label>
-            <input type="date" id="expirydate" name="expirydate" oninput="validateExpiryDate()">
+            <input type="date" id="expirydate" name="expirydate" oninput="validateExpiryDate()"  required>
             <div id="expirydateError" class="error"></div>
 
             <button type="submit" name="submit">Submit Payment</button>
         </form>
         <div id="paymentMessage" class="message"></div>
-
+    
         <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database connection
-    $conn = new mysqli('localhost', 'root', '', 'miniproject');
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
     $accountholdername = $_POST['accountholdername'];
     
     $accountno = $_POST['accountno'];
@@ -241,66 +272,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt1 = $conn->prepare("SELECT ussrid FROM user WHERE email = ?");
     $stmt1->bind_param("s", $_SESSION['login_user']);
     $stmt1->execute();
-    $result1 = $stmt1->get_result();
+   $result1 = $stmt1->get_result();
 
-    if ($row1 = $result1->fetch_assoc()) {
-        $u_id = $row1['ussrid']; 
-    }
-
+  if ($row1 = $result1->fetch_assoc()) {
+      $u_id = $row1['ussrid']; 
+   
+  }
+     $stmt1->close();
     // Check if the entered details match any record in the 'bank' table
-    $stmt = $conn->prepare("SELECT * FROM bank WHERE account_holder_name = ? AND accountno = ? AND ifsc = ? AND cvv = ? AND expirydate = ?");
-    $stmt->bind_param("sssss", $accountholdername, $accountno, $ifsc, $cvv, $expirydate);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row1 = $result->fetch_assoc()) {
-            $amt=$row1['balance']; 
+    $stmt2 = $conn->prepare("SELECT * FROM bank WHERE account_holder_name = ? AND accountno = ? AND ifsc = ? AND cvv = ? AND expirydate = ?");
+    $stmt2->bind_param("sssss", $accountholdername, $accountno, $ifsc, $cvv, $expirydate);
+    $stmt2->execute();
+    $result2 = $stmt2->get_result();
+    if ($row2 = $result2->fetch_assoc()) {
+            $amt=$row2['balance']; 
            
             
            
         // Prepare and bind booking statement
-        $stmt = $conn->prepare("INSERT INTO booking (residents_name, ussrid, dob, place, no_of_stay, gender, amount) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sissisi", $_SESSION['residentName'], $u_id, $_SESSION['dob'], $_SESSION['place'], $_SESSION['days'], $_SESSION['gender'], $_SESSION['totalAmount']);
         $currentDate = date("Y-m-d");
-        $stmt = $conn->prepare("SELECT booking_id from booking where dob=? ");
-        $stmt->bind_param("i", $currentDate);
-        if ($row = $result->fetch_assoc()) {
-            $b_id=$row['booking_id '];
-        }
+        $stmt3 = $conn->prepare("INSERT INTO booking (residents_name, ussrid, bookingdate, place, no_of_stay, gender, amount) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt3->bind_param("sissisi", $_SESSION['residentName'], $u_id, $currentDate, $_SESSION['place'], $_SESSION['days'], $_SESSION['gender'], $_SESSION['tamount']);
+           if ($stmt3->execute()) {
+              //  echo"booking ibsertion executed";
+            }
+             $stmt3->close();
+              $stmt2->close();
+      $stmt4 = $conn->prepare("SELECT booking_id FROM booking WHERE bookingdate = ? AND ussrid = ?");
+$stmt4->bind_param("si", $currentDate, $u_id);
+$stmt4->execute(); // Ensure the query is executed
+$result4 = $stmt4->get_result();
+
+if ($row4 = $result4->fetch_assoc()) {
+    $b_id = $row4['booking_id']; // Corrected the key 'booking_id' without the extra space
+   $stmt4->close();
+}
+
+   // Close the statement after use
+
         // Prepare and bind booking statement
-        $stmt = $conn->prepare("INSERT INTO orgtransaction (booking_id,transaction_date,credited_amount,name) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isis",$b_id,$currentDate,$_SESSION['totalAmount'],$accountholdername);
+        $stmt5 = $conn->prepare("INSERT INTO orgtransaction (booking_id,transaction_date,credited_amount,name) VALUES (?, ?, ?, ?)");
+        $stmt5->bind_param("isis",$b_id,$currentDate,$_SESSION['tamount'],$accountholdername);
         
             // Execute the booking statement
-            if ($stmt->execute()) {
-                echo"executed";
-            }
+            if ($stmt5->execute()) {
+               // echo" org transaction insertion executed";
+           $stmt5->close();
         // Execute the booking statement
-        if ($stmt->execute()) {
+       
             // Retrieve the last inserted booking details
-            $booking_id = $stmt->insert_id;
-            $stmt = $conn->prepare("SELECT residents_name, dob, place, no_of_stay, gender, amount FROM booking WHERE booking_id = ?");
-            $stmt->bind_param("i", $booking_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+          
+            $stmt6 = $conn->prepare("SELECT residents_name, bookingdate, place, no_of_stay, gender, amount FROM booking WHERE booking_id = ?");
+            $stmt6->bind_param("i", $b_id);
+            $stmt6->execute();
+            $result6 = $stmt6->get_result();
 
-            if ($row = $result->fetch_assoc()) {
+            if ($row6 = $result6->fetch_assoc()) {
                 // Display the booking details
                 echo '<div class="booking-details">';
                 echo '<h2>Booking Details</h2>';
-                echo '<p><strong>Resident Name:</strong> ' . htmlspecialchars($row['residents_name']) . '</p>';
-                echo '<p><strong>Date of Birth:</strong> ' . htmlspecialchars($row['dob']) . '</p>';
-                echo '<p><strong>Place:</strong> ' . htmlspecialchars($row['place']) . '</p>';
-                echo '<p><strong>Number of Days:</strong> ' . htmlspecialchars($row['no_of_stay']) . '</p>';
-                echo '<p><strong>Gender:</strong> ' . htmlspecialchars($row['gender']) . '</p>';
-                echo '<p><strong>Total Amount:</strong> ₹' . htmlspecialchars($row['amount']) . '</p>';
-                echo '</div>';
-                $newamt=$amt-$row['amount'];
-                $stmt = $conn->prepare("UPDATE  bank set balance = ? WHERE account_holder_name = ? AND accountno = ? AND ifsc = ? AND cvv = ? AND expirydate = ?");
-            $stmt->bind_param("isssss", $newamt, $accountholdername, $accountno, $ifsc, $cvv, $expirydate);
-            if($stmt->execute())
+                echo '<p><strong>Resident Name:</strong> ' . htmlspecialchars($row6['residents_name']) . '</p>';
+                echo '<p><strong>Booking date:</strong> ' . htmlspecialchars($row6['bookingdate']) . '</p>';
+                echo '<p><strong>Place:</strong> ' . htmlspecialchars($row6['place']) . '</p>';
+                echo '<p><strong>Number of Days:</strong> ' . htmlspecialchars($row6['no_of_stay']) . '</p>';
+                echo '<p><strong>Gender:</strong> ' . htmlspecialchars($row6['gender']) . '</p>';
+                echo '<p><strong>Total Amount:</strong> ₹' . htmlspecialchars($row6['amount']) . '</p>';
+                echo ' </div>';
+             
+
+                      
+       $stmt6->close();
+
+                $newamt=$amt-$_SESSION['tamount'];
+                $stmt7 = $conn->prepare("UPDATE  bank set balance = ? WHERE account_holder_name = ? AND accountno = ? AND ifsc = ? AND cvv = ? AND expirydate = ?");
+            $stmt7->bind_param("isssss", $newamt, $accountholdername, $accountno, $ifsc, $cvv, $expirydate);
+            if($stmt7->execute())
             {
-                
-                echo"updation successful";
+                 $stmt7->close();
+               // echo" balance updation successfully";
             }
             }
 
@@ -310,17 +359,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Handle booking failure
             echo '<div id="paymentMessage" class="message">Payment Failed! Please try again.</div>';
         }
-        
-        $stmt->close();
+
     } else {
         // Handle invalid payment details
         echo '<div id="paymentMessage" class="message">Invalid payment details! Please check your information and try again.</div>';
     }
 
+    
+      
     $conn->close();
+
 }
 ?>
-
+<div class="back-button-container">
+            <button id="backButton" onclick="window.location.href='klakla.php'">Back</button>
+        </div>
+    </div>
     </div>
     <script>
         // JavaScript validation functions
@@ -328,7 +382,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var accountholdername = document.getElementById('accountholdername').value;
             var errorDiv = document.getElementById('accountholdernameError');
             if (accountholdername === '') {
-                errorDiv.textContent = 'Account holder name cannot be empty.';
+                errorDiv.textContent = 'Account name should be in letters.';
             } else {
                 errorDiv.textContent = '';
             }
@@ -338,7 +392,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var accountno = document.getElementById('accountno').value;
             var errorDiv = document.getElementById('accountnoError');
             if (accountno === '') {
-                errorDiv.textContent = 'Account number cannot be empty.';
+                errorDiv.textContent = 'Account number should be 10 digits.';
             } else if (!/^\d{9,18}$/.test(accountno)) {
                 errorDiv.textContent = 'Invalid account number. Please enter a valid number.';
             } else {
@@ -346,17 +400,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        function validateIfsc() {
-            var ifsc = document.getElementById('ifsc').value;
-            var errorDiv = document.getElementById('ifscError');
-            if (ifsc === '') {
-                errorDiv.textContent = 'IFSC code cannot be empty.';
-            } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
-                errorDiv.textContent = 'Invalid IFSC code. Please enter a valid code.';
-            } else {
-                errorDiv.textContent = '';
-            }
-        }
+     function validateIfsc() {
+    var ifsc = document.getElementById('ifsc').value;
+    var errorDiv = document.getElementById('ifscError');
+    if (ifsc === '') {
+        errorDiv.textContent = 'IFSC code cannot be empty.';
+    } else if (!/^[A-Za-z0-9]{7}$/.test(ifsc)) {
+        errorDiv.textContent = 'Invalid IFSC code. Please enter exactly 7 characters (alphabets and numbers).';
+    } else {
+        errorDiv.textContent = '';
+    }
+}
 
         function validateCvv() {
             var cvv = document.getElementById('cvv').value;
@@ -380,5 +434,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
+    <div class="back-button-container">
+    <button id="backButton" onclick="window.location.href='klakla.php'">Back</button>
+</div>  
+
+
 </body>
 </html>
