@@ -1,46 +1,28 @@
-﻿<?php
+<?php
 // Start the session
 session_start();
+include('db.php');
 
-// PHP Code to handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database connection settings
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "miniproject";
-
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Retrieve form data and store them in session variables
+    // Store total amount in session
     $_SESSION['residentName'] = $_POST['residentName'];
-    $_SESSION['dob'] = $_POST['dob'];
+    $days = $_POST['days'];
+    $rtype = $_POST['roomtype'];
+
+    if ($rtype == "Platinum") {
+        $amt = 150 * $days;
+    } else {
+        $amt = 100 * $days;
+    }
+    $_SESSION['tamount'] = $amt;
+    $_SESSION['days'] = $days;
     $_SESSION['place'] = $_POST['place'];
     $_SESSION['gender'] = $_POST['gender'];
-    $_SESSION['days'] = $_POST['days'];
-    $_SESSION['totalAmount'] = $_POST['totalAmount'];
 
-    // Prepare and bind
-  
-      
-        // Redirect to the payment page after a successful booking
-       header("Location: payment.php");
-        exit(); // Ensure the script stops executing after the redirect
-    
-
-    // Close connections
-    $stmt->close();
-    $conn->close();
+    header("location: payment.php");
+    exit();
 }
 ?>
-}
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -226,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .error {
-            color: #CF6679;
+            color: #FFFFFF;
             font-size: 0.9em;
             margin-top: -15px;
             margin-bottom: 10px;
@@ -285,12 +267,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="room-selection">
             <h2>Choose Your Room Type</h2>
             <div class="room-options">
-                <div class="room" onclick="selectRoom(this, 'Platinum', 150)">
+                <div class="room">
                     <img src="platinum.jpg" alt="Platinum Room">
                     <h3>Platinum Room</h3>
                     <p>$150 per day</p>
                 </div>
-                <div class="room" onclick="selectRoom(this, 'Gold', 100)">
+                <div class="room">
                     <img src="gold.jpg" alt="Gold Room">
                     <h3>Gold Room</h3>
                     <p>$100 per day</p>
@@ -309,7 +291,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <div id="bookingContainer" style="display:none;">
+        <div id="bookingContainer">
             <h2>Complete Your Booking</h2>
             <div class="booking-form">
                 <form method="POST" action="">
@@ -317,12 +299,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" id="residentName" name="residentName" required>
                     <div id="nameError" class="error">Please enter a valid name (letters only).</div>
 
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required>
-                    <div id="dobError" class="error">Please enter a valid date of birth.</div>
-
                     <label for="place">Place</label>
                     <input type="text" id="place" name="place" required>
+                    <div id="placeError" class="error">Place must contain only letters and spaces.</div>
 
                     <label for="gender">Gender</label>
                     <select id="gender" name="gender" required>
@@ -331,84 +310,98 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Other">Other</option>
                     </select>
 
+                    <label for="roomtype">Room Type</label>
+                    <select id="roomtype" name="roomtype" required>
+                        <option value="Platinum">Platinum</option>
+                        <option value="Gold">Gold</option>
+                    </select>
+
                     <label for="days">Number of Days</label>
                     <input type="number" id="days" name="days" required>
                     <div id="daysError" class="error">Number of days should be a positive number.</div>
-
-                    <input type="hidden" id="totalAmount" name="totalAmount">
-                    
-                    <div class="total-section">
-                        <h3>Total Amount:</h3>
-                        <div id="totalAmountDisplay" class="total-amount">$0</div>
-                    </div>
 
                     <button type="submit">Book Now</button>
                 </form>
             </div>
         </div>
+
+      
     </div>
 
     <script>
-        let selectedRoomType = '';
-        let selectedRoomPrice = 0;
+        function validateName(id, errorId) {
+            var name = document.getElementById(id).value;
+            var namePattern = /^[A-Za-z]+$/;
+            var nameError = document.getElementById(errorId);
 
-        function selectRoom(element, roomType, roomPrice) {
-            // Reset previous selection
-            const rooms = document.querySelectorAll('.room');
-            rooms.forEach(room => {
-                room.classList.remove('selected');
-            });
-
-            // Highlight selected room
-            element.classList.add('selected');
-
-            // Set selected room type and price
-            selectedRoomType = roomType;
-            selectedRoomPrice = roomPrice;
-
-            // Show booking container
-            document.getElementById('bookingContainer').style.display = 'block';
-
-            // Update the total amount
-            calculateTotalAmount();
-        }
-
-        function calculateTotalAmount() {
-            const days = document.getElementById('days').value;
-            const totalAmount = selectedRoomPrice * days;
-            document.getElementById('totalAmountDisplay').textContent = `$${totalAmount}`;
-            document.getElementById('totalAmount').value = totalAmount; // Set hidden input value
-        }
-
-        // Add event listeners for form validation and dynamic total amount calculation
-        document.getElementById('days').addEventListener('input', calculateTotalAmount);
-        document.getElementById('residentName').addEventListener('input', validateName);
-        document.getElementById('dob').addEventListener('input', validateDOB);
-
-        function validateName() {
-            const nameInput = document.getElementById('residentName');
-            const nameError = document.getElementById('nameError');
-            const namePattern = /^[A-Za-z]+$/;
-
-            if (!namePattern.test(nameInput.value)) {
-                nameError.classList.add('show');
+            if (!namePattern.test(name)) {
+                nameError.textContent = "Name must contain only letters.";
+                nameError.classList.add("show");
             } else {
-                nameError.classList.remove('show');
+                nameError.classList.remove("show");
             }
         }
 
-        function validateDOB() {
-            const dobInput = document.getElementById('dob');
-            const dobError = document.getElementById('dobError');
-            const selectedDate = new Date(dobInput.value);
-            const today = new Date();
+        function validatePlace() {
+            var place = document.getElementById("place").value;
+            var placePattern = /^[A-Za-z\s]+$/;
+            var placeError = document.getElementById("placeError");
 
-            if (selectedDate >= today) {
-                dobError.classList.add('show');
+            if (!placePattern.test(place)) {
+                placeError.textContent = "Place must contain only letters and spaces.";
+                placeError.classList.add("show");
             } else {
-                dobError.classList.remove('show');
+                placeError.classList.remove("show");
             }
         }
+
+        function validateDays() {
+            var days = document.getElementById("days").value;
+            var daysError = document.getElementById("daysError");
+
+            if (days <= 0 || isNaN(days)) {
+                daysError.textContent = "Number of days should be a positive number.";
+                daysError.classList.add("show");
+            } else {
+                daysError.classList.remove("show");
+            }
+        }
+
+        document.getElementById("residentName").addEventListener("input", function() {
+            validateName("residentName", "nameError");
+        });
+
+        document.getElementById("place").addEventListener("input", validatePlace);
+
+        document.getElementById("days").addEventListener("input", validateDays);
+
+        document.getElementById("roomtype").addEventListener("change", function() {
+            var roomType = document.getElementById("roomtype").value;
+            var days = document.getElementById("days").value;
+            var totalAmount = 0;
+
+            if (roomType === "Platinum") {
+                totalAmount = 150 * days;
+            } else if (roomType === "Gold") {
+                totalAmount = 100 * days;
+            }
+
+            document.getElementById("totalAmount").textContent = "$" + totalAmount.toFixed(2);
+        });
+
+        document.getElementById("days").addEventListener("input", function() {
+            var days = document.getElementById("days").value;
+            var roomType = document.getElementById("roomtype").value;
+            var totalAmount = 0;
+
+            if (roomType === "Platinum") {
+                totalAmount = 150 * days;
+            } else if (roomType === "Gold") {
+                totalAmount = 100 * days;
+            }
+
+            document.getElementById("totalAmount").textContent = "$" + totalAmount.toFixed(2);
+        });
     </script>
 </body>
 </html>
