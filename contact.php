@@ -146,7 +146,7 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo '<p><strong>' . htmlspecialchars($row['name']) . ':</strong> ' . htmlspecialchars($row['message']) . '</p>';
                     if ($row['reply']) {
-                        echo '<p class="reply"><strong>Admin Reply:</strong> ' . htmlspecialchars($row['reply']) . '</p>';
+                        echo '<p class="reply"><strong>CREST HOME CARE:</strong> ' . htmlspecialchars($row['reply']) . '</p>';
                     } else {
                         echo '<p><em>Waiting for reply...</em></p>';
                     }
