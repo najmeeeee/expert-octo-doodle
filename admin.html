@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crest Home Care Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #005f73;
+            color: #fff;
+            padding: 1rem;
+            border-bottom: 2px solid #003d34;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        header .profile {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        header .profile span {
+            margin-right: 15px;
+        }
+
+        header .profile .logout-btn {
+            background-color: #ff4c4c;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #e9f5f5;
+            padding: 1rem;
+            border-right: 2px solid #005f73;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar nav ul li {
+            margin: 1rem 0;
+        }
+
+        .sidebar nav ul li a {
+            text-decoration: none;
+            color: #005f73;
+            font-size: 1.2rem;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: #cce7e8;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .description {
+            margin-bottom: 2rem;
+        }
+
+        .description h2 {
+            color: #005f73;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .description p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header>
+            <div class="logo">Crest Home Care</div>
+            <div class="profile">
+                <span>Admin Name</span>
+                <a href="logout.php" class="logout-btn">Logout</a>
+            </div>
+        </header>
+
+        <!-- Sidebar Menu -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="adbooking.php" id="bookings">Bookings</a></li>
+                    <li><a href="#" id="reviews">Reviews</a></li>
+                    <li><a href="#" id="contacts">Contacts</a></li>
+                    <li><a href="#" id="reports">Reports</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <div class="description">
+                <h2>Welcome to Crest Home Care</h2>
+                <p>Crest Home Care is dedicated to providing exceptional care and support for the elderly. Our services include 24/7 care, assistance with daily living activities, medication management, and more. Our team of compassionate professionals ensures that every resident receives personalized care tailored to their needs.</p>
+            </div>
+
+            <h1>Bookings Content</h1>
+            <p>This is where the bookings content will be displayed.</p>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainContent = document.getElementById('main-content');
+
+            function loadContent(page) {
+                // Simulate loading content based on the page parameter
+                if (page === 'Bookings') {
+                    mainContent.innerHTML = `
+                        <div class="description">
+                            <h2>Welcome to Crest Home Care</h2>
+                            <p>Crest Home Care is dedicated to providing exceptional care and support for the elderly. Our services include 24/7 care, assistance with daily living activities, medication management, and more. Our team of compassionate professionals ensures that every resident receives personalized care tailored to their needs.</p>
+                        </div>
+                        <h1>Bookings Content</h1>
+                        <p>This is where the bookings content will be displayed.</p>
+                    `;
+                } else {
+                    mainContent.innerHTML = `<h1>${page} Content</h1><p>This is where the ${page} content will be displayed.</p>`;
+                }
+            }
+
+            document.getElementById('bookings').addEventListener('click', () => loadContent('Bookings'));
+            document.getElementById('reviews').addEventListener('click', () => loadContent('Reviews'));
+            document.getElementById('contacts').addEventListener('click', () => loadContent('Contacts'));
+            document.getElementById('reports').addEventListener('click', () => loadContent('Reports'));
+
+            // Load default content
+            loadContent('Bookings');
+        });
+    </script>
+</body>
+</html>
