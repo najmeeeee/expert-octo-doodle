@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - Crest Home Care</title>
+    <style>
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("team3.jpg"); /* Background image */
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #333; /* Default text color */
+}
+
+.team-section, .additional-content {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin: 50px auto;
+    max-width: 900px;
+    position: relative;
+    z-index: 1; /* Ensures the containers are above the background */
+}
+
+.additional-content {
+    background-color: rgba(249, 249, 249, 0.8); /* Slightly transparent background color */
+    margin-bottom: 60px; /* Adds space below the additional content */
+}
+
+.team-section h1, .additional-content h2 {
+    color: #009688; /* Teal color */
+}
+
+.team-section h1 {
+    font-size: 2.8em;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.team-section p, .additional-content p {
+    font-size: 1.1em;
+    color: #111; /* Darker font color */
+    line-height: 1.8;
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: rgba(0, 150, 136, 0.1); /* Lighter teal background for items */
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: #111; /* Darker font color */
+}
+
+.team-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 150, 136, 0.2); /* Teal shadow on hover */
+}
+
+.shape {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #009688; /* Teal color */
+    color: #fff;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.team-item:hover .shape {
+    background-color: #80cbc4; /* Lighter teal on hover */
+    transform: rotate(10deg);
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.hexagon {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.square {
+    border-radius: 10px;
+}
+
+.oval {
+    border-radius: 50%/30%;
+}
+
+.pentagon {
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.star {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.octagon {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.shape img {
+    width: 50px;
+    height: 50px;
+}
+
+.team-content h2 {
+    font-size: 1.4em;
+    margin: 0;
+    color: #00796b; /* Darker teal for headings */
+}
+
+.team-content p {
+    font-size: 1em;
+    color: #111; /* Darker font color */
+    margin-top: 5px;
+    line-height: 1.6;
+}
+
+.additional-content h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.additional-content p {
+    font-size: 1.1em;
+    color: #111; /* Darker font color */
+    line-height: 1.8;
+}
+</style>
+</head>
+<body>
+    <section class="additional-content">
+        <h2>Why Crest Home Care Stands Out</h2>
+        <p>Crest Home Care is dedicated to providing top-notch care and support tailored to the individual needs of our clients. With our professional team, you can rest assured that you or your loved ones are in the best hands.</p>
+    </section>
+
+    <section class="team-section">
+        <h1>Meet Our Dedicated Team</h1>
+        <p>At Crest Home Care, our team is committed to providing comprehensive wellness amenities, ensuring that your health, safety, and comfort are our top priorities. Our dedicated professionals offer expert care and support, tailored to meet your unique needs.</p>
+        <ul class="team-list">
+            <li class="team-item">
+                <div class="shape circle">
+                    <img src="C:\xampp\htdocs\crest\img\team4.png" alt="Nurse">
+                </div>
+                <div class="team-content">
+                    <h2>24-Hour Nursing Support</h2>
+                    <p>Our nurses provide round-the-clock care and support to ensure your health and well-being.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape hexagon">
+                    <img src="C:\xampp\htdocs\crest\img\team5.png" alt="Doctor">
+                </div>
+                <div class="team-content">
+                    <h2>Doctor on Call</h2>
+                    <p>Expert medical support whenever you need it with our doctor on call service.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape triangle">
+                    <img src="C:\xampp\htdocs\crest\img\team6.png" alt="Ambulance">
+                </div>
+                <div class="team-content">
+                    <h2>Ambulance on Call</h2>
+                    <p>Immediate emergency transportation available at all times.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape square">
+                    <img src="C:\xampp\htdocs\crest\img\team7.png" alt="Medication Management">
+                </div>
+                <div class="team-content">
+                    <h2>Medication Management</h2>
+                    <p>Assistance with managing your medications, ensuring correct dosages and timings.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape oval">
+                    <img src="C:\xampp\htdocs\crest\img\team8.png" alt="Meal Assistance">
+                </div>
+                <div class="team-content">
+                    <h2>Meal Assistance</h2>
+                    <p>Nutritious meals prepared and served with care according to your dietary needs.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape pentagon">
+                    <img src="C:\xampp\htdocs\crest\img\team2.png" alt="Dressing Assistance">
+                </div>
+                <div class="team-content">
+                    <h2>Dressing Assistance</h2>
+                    <p>Help with dressing to ensure comfort and dignity.</p>
+                </div>
+            </li>
+            <li class="team-item">
+                <div class="shape star">
+                    <img src="star-icon.png" alt="Special Care">
+                </div>
+                <div class="team-content">
+                    <h2>Special Care</h2>
+                    <p>Tailored care services for unique needs, ensuring personalized attention.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+</body>
+</html>
