@@ -91,27 +91,7 @@ if (!isset($_SESSION['login_user'])) {
         <img src="logo.jpg" alt="logo" style="width: 30%;">
       </a>
     </div>
-    <div class="col-8 col-md-12 col-lg-6 col-sm-8 text-right">
-      <ul class="navbar-nav container icon">
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-tripadvisor"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-facebook-f"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-youtube"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-google-plus-g"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fab fa-pinterest-p"></i></a>
-        </li>
-      </ul>
+    <div>
       <ul class="navbar-nav menu">
         <li class="nav-item">
           <a class="nav-link" href="am.html">AMENITIES</a>
@@ -120,18 +100,26 @@ if (!isset($_SESSION['login_user'])) {
           <a class="nav-link" href="team.html">| TEAM </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="booking.php">| BOOKING </a>
+          <a class="nav-link" href="roomf.php">| BOOKING </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="r1.html">| REVIEW</a>
+          <a class="nav-link" href="review.php">| REVIEW</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cu.html">| CONTACTS</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="logssession.php">| logout
+           <li class="nav-item">
+          <a class="nav-link" href="track3.php">| TRACKS
           </a>
-        </li>
+          </li>
+           <li class="nav-item">
+          <a class="nav-link" href="history.php">| history
+          </a></li>
+           <li class="nav-item">
+          <a class="nav-link" href="contact.php">| CONTACT
+          </a>
+          </li>
+           <li class="nav-item">
+          <a class="nav-link" href="logssession.php">| LOGOUT
+          </a>
+       
       </ul>
     </div>
   </nav>
@@ -239,10 +227,15 @@ if (!isset($_SESSION['login_user'])) {
     <div class="col-12 col-md-4 text-center">
       <h3 style="color:#16a085!important">Why choose us?</h3>
       <p>
-        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form. By injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+The Crest home care management system is a  platform designed to indulge in old dreams and discover new passion.
+The crest provides seamless experience for the users to  effortlessly choose their  ideal apartments with just a tap.
+The administrators manage and oversee facility operations effectively. We provide round-the-clock care and support including assistance
+with tasks such as dressing ,medication management and meals. Ambulance on  call, doctor on call and 24 hour nursing support  highlights
+Crest’s commitment in providing comprehensive wellness amenities. 
+Long story short we prioritize user empowerment thus  ensuring a hassle-free and personalized experience 
       </p>
       <p>
-        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form. By injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+At Crest Home Care, our team is committed to providing comprehensive wellness amenities, ensuring that your health, safety, and comfort are our top priorities. Our dedicated professionals offer expert care and support, tailored to meet your unique needs.
       </p>
     </div>
     <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
