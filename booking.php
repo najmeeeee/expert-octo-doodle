@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['days'] = $days;
     $_SESSION['place'] = $_POST['place'];
     $_SESSION['gender'] = $_POST['gender'];
+    $_SESSION['checkin']=$_POST['checkin'];
 
     header("location: payment.php");
     exit();
@@ -319,7 +320,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="days">Number of Days</label>
                     <input type="number" id="days" name="days" required>
                     <div id="daysError" class="error">Number of days should be a positive number.</div>
-
+                     <label for="checkin">Check-in Date:</label>
+        <input type="date" id="checkin" name="checkin">
+        <div id="checkinError" class="error"></div>
                     <button type="submit">Book Now</button>
                 </form>
             </div>
@@ -366,6 +369,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 daysError.classList.remove("show");
             }
         }
+        document.getElementById("checkin").addEventListener("input", function () {
+    var checkinDate = new Date(this.value),
+        today = new Date(),
+        futureLimit = new Date(today.setDate(today.getDate() + 30)),
+        errorMsg = "";
+
+    if (checkinDate < new Date()) {
+        errorMsg = "Check-in date cannot be in the past.";
+    } else if (checkinDate > futureLimit) {
+        errorMsg = "Check-in date cannot be more than 30 days in the future.";
+    }
+
+    document.getElementById("checkinError").textContent = errorMsg;
+    document.getElementById("checkinError").classList.toggle("show", errorMsg !== "");
+});
+
 
         document.getElementById("residentName").addEventListener("input", function() {
             validateName("residentName", "nameError");
